@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Operation: Overwatch — Three.js FPS</title>
+<style>
+  /* Black Ops One: CoD-style stencil/military display font, vendored locally */
+  @font-face {
+    font-family: "Black Ops One";
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("./fonts/BlackOpsOne.woff2") format("woff2");
+  }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #05070a;
+    font-family: "Black Ops One", "Segoe UI", system-ui, Roboto, sans-serif; color: #dfe7ee; }
+  canvas { display: block; }
+  #blocker {
+    position: fixed; inset: 0; z-index: 50; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    background: radial-gradient(circle at 50% 40%, rgba(20,28,36,.65), rgba(5,7,10,.92));
+    backdrop-filter: blur(2px);
+  }
+  #blocker .panel { max-width: 560px; padding: 0 24px; }
+  #blocker h1 { font-size: 38px; letter-spacing: 4px; margin: 0 0 6px;
+    color: #c8ff00; text-shadow: 0 0 24px rgba(200,255,0,.35); font-weight: 800; }
+  #blocker .sub { letter-spacing: 3px; font-size: 12px; opacity: .6; margin-bottom: 26px; }
+  #blocker .click { font-size: 18px; letter-spacing: 2px; margin: 18px 0 22px; color: #fff; }
+  #blocker .ctrls { font-size: 13px; line-height: 2; opacity: .82; }
+  .key { display: inline-block; border: 1px solid #4a5560; border-radius: 5px;
+    padding: 1px 8px; margin: 0 2px; font-size: 12px; background: rgba(255,255,255,.04);
+    font-family: ui-monospace, "Cascadia Code", monospace; }
+  #blocker .hint { margin-top: 22px; font-size: 12px; opacity: .5; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "/vendor/three.module.js",
+    "three/addons/": "/vendor/three/addons/"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="blocker">
+    <div class="panel">
+      <h1>OPERATION: OVERWATCH</h1>
+      <div class="sub">THREE.JS TACTICAL ENGAGEMENT</div>
+      <!-- Round 11: the shader/texture pre-warm blocks the main thread for a
+           moment at load. Show that as an honest loading state instead of a
+           "click to enter" prompt that ignores clicks. main.js flips this to
+           the ready text once prewarmRenderer() returns. -->
+      <div class="click" id="startline" style="opacity:.55">◌ PREPARING SHADERS…</div>
+      <div class="ctrls">
+        <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> move &nbsp;·&nbsp;
+        <span class="key">Mouse</span> look &nbsp;·&nbsp;
+        <span class="key">L-Click</span> fire<br />
+        <span class="key">Space</span> jump &nbsp;·&nbsp;
+        <span class="key">Shift</span> sprint &nbsp;·&nbsp;
+        <span class="key">R</span> reload &nbsp;·&nbsp;
+        <span class="key">Esc</span> pause
+      </div>
+      <div class="hint">Eliminate all hostiles. Don't get flanked.</div>
+    </div>
+  </div>
+  <script>
+    // file:// guard: the game uses ES modules + an import map pointing at
+    // /vendor/. Browsers (Chrome/Edge) block ES module loading over file://
+    // for CORS reasons, so double-clicking index.html silently fails — the
+    // module never runs and the click handler is never attached. Show a clear
+    // message instead of a dead "click to start" overlay.
+    if (location.protocol === 'file:') {
+      var b = document.getElementById('blocker');
+      if (b) {
+        b.style.cursor = 'default';
+        b.innerHTML =
+          '<div class="panel">'
+          + '<h1 style="color:#ff5a4d;text-shadow:none">CANNOT RUN FROM FILE://</h1>'
+          + '<div class="sub">THIS GAME USES ES MODULES — IT NEEDS A LOCAL SERVER</div>'
+          + '<div class="click" style="color:#ffd54a">双击项目根目录的 <b>start.bat</b></div>'
+          + '<div class="ctrls">然后浏览器打开 <b>http://localhost:8080/</b><br>'
+          + '（直接双击 index.html 会被浏览器拦截，游戏无法启动）</div>'
+          + '</div>';
+      }
+    }
+  </script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

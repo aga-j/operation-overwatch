@@ -1,0 +1,10 @@
+# Dev / QA artifacts — not needed for deployment
+.shots/
+.attic/
+.workbuddy/
+tools/
+start.bat
+*.log
+*-report.json
+*-report.md
+play_session-report.json
