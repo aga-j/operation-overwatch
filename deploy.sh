@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 
+PORT=${1:-8080}
+
 echo "========================================="
-echo "  Operation: Overwatch 部署脚本"
+echo "  Operation: Overwatch 部署脚本 (端口: ${PORT})"
 echo "========================================="
 
 # 1. 安装 nginx + git + unzip
@@ -70,8 +72,8 @@ http {
     keepalive_timeout 65;
 
     server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
+        listen ${PORT} default_server;
+        listen [::]:${PORT} default_server;
         server_name _;
         root /var/www/operation-overwatch;
         index index.html;
@@ -108,8 +110,8 @@ PUBLIC_IP=$(curl -s ifconfig.me || curl -s ip.sb || echo "YOUR_SERVER_IP")
 echo ""
 echo "========================================="
 echo "  部署完成!"
-echo "  游戏地址: http://${PUBLIC_IP}/"
+echo "  游戏地址: http://${PUBLIC_IP}:${PORT}/"
 echo "========================================="
 echo ""
-echo "提示: 确保腾讯云控制台的防火墙已开放 80 端口"
-echo "      (轻量服务器 -> 防火墙 -> 添加规则 -> TCP:80 允许)"
+echo "提示: 确保腾讯云控制台的防火墙已开放 ${PORT} 端口"
+echo "      (轻量服务器 -> 防火墙 -> 添加规则 -> TCP:${PORT} 允许)"
