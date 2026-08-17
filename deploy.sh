@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-PORT=${1:-8080}
+PORT=${1:-80}
 
 echo "========================================="
 echo "  Operation: Overwatch 部署脚本 (端口: ${PORT})"

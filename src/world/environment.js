@@ -711,7 +711,7 @@ function buildLighting(scene) {
   // Low, raking sun (~30° elevation) for dramatic shadows.
   sun.position.set(46, 33, 32);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(1024, 1024);
 
   // P0#1 — tighten the shadow frustum to the playable area near the origin so
   // texel density (and therefore shadow crispness) goes way up.
